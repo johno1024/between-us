@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0a10">
+<title>BETWEEN US — The Connection Mix</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#0b0a10;--card:#17131d;--card2:#211927;--ink:#fff;--mut:#b9adbf;--line:#352a3d;--a:#ff6fae;--b:#8d7cff;--c:#ffc76f}
+*{box-sizing:border-box}html,body{margin:0;background:radial-gradient(circle at 50% -10%,#341a35 0,#0b0a10 38%);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100%}
+button,input{font:inherit}.wrap{max-width:720px;margin:auto;padding:18px 16px 132px}.brand{font-size:12px;font-weight:950;letter-spacing:.18em}.mut{color:var(--mut)}
+.card{background:linear-gradient(180deg,#1b1620,#121016);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 22px 70px #0007;margin-top:16px}
+.hero{padding:34px 24px;text-align:center}.hero h1{font-size:44px;line-height:.92;margin:10px 0;background:linear-gradient(90deg,var(--a),#ffd5e6,var(--b));-webkit-background-clip:text;color:transparent}.hero p{color:var(--mut);line-height:1.55}
+.btn{width:100%;border:0;border-radius:16px;padding:15px;font-weight:950;font-size:15px;background:linear-gradient(90deg,var(--a),var(--b));color:white;margin-top:12px;cursor:pointer}.ghost{background:#201925;border:1px solid #4b3b55}
+.input{width:100%;padding:15px;border-radius:14px;border:1px solid #4b3b55;background:#0f0c13;color:#fff;font-size:16px;margin-top:12px}
+.top{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;position:sticky;top:0;padding:10px 0 12px;background:linear-gradient(#0b0a10 72%,transparent);z-index:5}
+.back{border:0;background:none;color:#ddd;font-weight:900}.meta{display:flex;justify-content:space-between;color:#c8bacd;font-size:12px;font-weight:850;letter-spacing:.08em}.progress{height:7px;background:#241d2b;border-radius:99px;overflow:hidden;margin-top:7px}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--b),var(--a))}
+.eyebrow{font-size:11px;font-weight:950;letter-spacing:.14em;color:#e5c9ea}.q{font-size:27px;line-height:1.12;margin:9px 0 17px}.hint{color:var(--mut);font-size:13px;margin:-7px 0 12px}
+.opt{display:flex;gap:12px;align-items:center;border:1px solid #3a2f43;background:#19151d;border-radius:16px;padding:14px;margin:8px 0;font-weight:780;cursor:pointer}.opt b{display:grid;place-items:center;min-width:34px;height:34px;border-radius:10px;background:#281d31}.opt.sel{border-color:var(--a);background:#2b1825;box-shadow:0 0 0 1px #ff6fae44 inset}.opt.sel b{background:#6b2a4b}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.scale .opt{display:block;text-align:center;padding:14px 4px}.scale10{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.scale10 .opt{display:block;text-align:center;padding:13px 4px}
+.nav{display:grid;grid-template-columns:1fr 1.5fr;gap:10px;margin-top:18px}.tiny{font-size:12px;color:var(--mut)}
+.pill{display:inline-block;padding:7px 10px;border-radius:999px;background:#22192a;border:1px solid #493754;font-size:11px;font-weight:900;letter-spacing:.08em;margin:4px}
+.scores{display:grid;grid-template-columns:1fr 1fr;gap:10px}.score{padding:14px;border:1px solid var(--line);border-radius:16px}.score strong{font-size:23px}
+.compare{display:grid;gap:10px}.row{padding:12px;border:1px solid var(--line);border-radius:14px;background:#151019}.row strong{display:block;margin-bottom:5px}.same{border-color:#4d7e65}.diff{border-color:#704453}
+.mission{padding:14px;border-left:3px solid var(--a);background:#1d1722;border-radius:12px;margin:10px 0}
+.qa{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:20;width:auto;padding:11px 15px;border-radius:999px;background:#211729;border:1px solid #8458a0;color:white;font-weight:950}
+.notice{padding:12px;border-radius:14px;background:#211927;border:1px solid #513b5f;color:#d9cbe0;margin-top:12px}
+@media(max-width:520px){.hero h1{font-size:38px}.q{font-size:24px}.scores{grid-template-columns:1fr}.wrap{padding-bottom:150px}.opt{padding:13px}.scale10{grid-template-columns:repeat(5,1fr)}}
+</style>
+</head>
+<body>
+<main class="wrap" id="app"></main>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const Q=[
+{c:'First Read',t:'mc',q:'What makes someone instantly more tempting to you?',o:['Confidence','Humor','Mystery','Style / presence','The way they look at me'],d:'Chemistry'},
+{c:'First Read',t:'multi',q:'Which signs tell you the attraction is mutual?',o:['Lingering eye contact','Flirty replies','Inside jokes','Finding excuses to be close','Playful touching','Late-night messages'],d:'Chemistry'},
+{c:'How You Connect',t:'mc',q:"What's the strongest sign that somebody genuinely likes you?",o:['They open up to me','They consistently make time for me',"There's obvious physical chemistry",'Their actions consistently match their words','They openly express how they feel about me'],d:'Security'},
+{c:'How You Connect',t:'mc',q:'Which creates the strongest connection for you?',o:['Vulnerability','Shared experiences','Physical chemistry','Trust','Feeling desired / appreciated'],d:'Connection'},
+{c:'Communication',t:'multi',q:'What helps you feel heard in a serious conversation?',o:['Eye contact and full attention','Questions that show curiosity','Validation before advice','A calm tone','A clear solution or next step'],d:'Communication'},
+{c:'Communication',t:'rate5',q:'How important is frequent communication throughout the day?',lo:'Low',hi:'High',d:'Communication'},
+{c:'Communication',t:'mc',q:'You send an important message and they do not reply for several hours. What is most like your first reaction?',o:['Assume they are busy and wait','Send a light follow-up','Check on them','Feel uneasy but wait to discuss it','Call or message again for reassurance'],d:'Security'},
+{c:'Trust',t:'multi',q:'Which behaviors make you feel secure in a relationship?',o:['Consistency','Honesty even when awkward','Following through','Respecting privacy','Including me in important parts of life'],d:'Security'},
+{c:'Trust',t:'mc',q:'They make new friends you have never met. What feels most natural?',o:['I am comfortable and let it unfold','I am curious and would like to meet them','I want some context and reassurance','I would feel uncomfortable until I know more'],d:'Security'},
+{c:'Affection',t:'rate5',q:'How much everyday physical affection do you ideally want?',lo:'Very little',hi:'Very frequent',d:'Affection'},
+{c:'Affection',t:'mc',q:'What makes romance feel most meaningful?',o:['Thoughtful small gestures','Planned dates and experiences','Participating in bonding activities','Deep conversation','Physical closeness'],d:'Affection'},
+{c:'Affection',t:'either',q:'Which is MORE like you?',o:['I enjoy spontaneous affection throughout ordinary days','Affection feels best when I am already relaxed and emotionally connected'],d:'Affection'},
+{c:'Lifestyle',t:'multi',q:'Which shared-life habits matter most to you?',o:['Regular date time','Shared hobbies','Time with friends or family','Personal alone time','Spontaneous adventures'],d:'Lifestyle'},
+{c:'Future',t:'mc',q:'One person gets an exciting opportunity that could significantly change your shared routine. What should happen first?',o:['Talk through how it affects both people','Encourage them to take it, then adjust','Make a pros-and-cons plan together','Protect the current routine unless both strongly agree'],d:'Future'},
+{c:'Conflict',t:'either',q:'Which is MORE like you during conflict?',o:['I want to stay engaged until we understand each other','I communicate better after I have time to cool down'],d:'Conflict'},
+{c:'Conflict',t:'rate5',q:'How important is resolving a disagreement before going to sleep?',lo:'Not important',hi:'Very important',d:'Conflict'},
+{c:'Conflict',t:'mc',q:'They say something that hurts you but insist they did not mean it that way. What matters most next?',o:['They understand the impact','I understand their intent','We both explain our perspective','We pause before either person gets more defensive'],d:'Conflict'},
+{c:'Intimacy',t:'mc',q:'Emotional intimacy grows most through…',o:['Honest vulnerable conversation','Quality time and shared experiences','Physical affection','Helping each other through real life'],d:'Intimacy'},
+{c:'Intimacy',t:'multi',q:'What makes you feel emotionally close?',o:['Sharing fears or insecurities','Laughing and being playful','Physical closeness','Feeling accepted without judgment','Being supported during stress'],d:'Intimacy'},
+{c:'Intimacy',t:'rate5',q:'How important is keeping dating energy alive in a long-term relationship?',lo:'Not important',hi:'Essential',d:'Intimacy'},
+{c:'Intimacy',t:'mc',q:'You notice you have felt less connected lately. What would you most want to do first?',o:['Plan intentional quality time','Talk openly about the distance','Increase everyday affection','Do something new together'],d:'Intimacy'},
+{c:'Love Style',t:'multi',q:'Select every gesture that strongly says “I love you” to you.',o:['Specific compliments or appreciation','Uninterrupted time together','Doing something helpful without being asked','Hugs or affectionate touch','A meaningful gift or surprise'],d:'Affection'},
+{c:'Love Style',t:'either',q:'Which is MORE like you?',o:['I feel especially loved when my partner makes focused time for me','I feel especially loved when my partner notices what needs doing and helps'],d:'Affection'},
+{c:'Getting Somewhere 👀',t:'mc',q:"When you're attracted to somebody, you're most likely to…",o:['Ask increasingly personal questions','Find reasons to spend time alone with them','Become noticeably more flirtatious / physical','Start doing thoughtful things for them','Compliment / tease them more'],d:'Chemistry'},
+{c:'Getting Somewhere 👀',t:'mc',q:"What's the BEST kind of flirting?",o:['Clever conversation','Inside jokes','Physical tension','Playful teasing','Direct compliments'],d:'Chemistry'},
+{c:'No Safe Answers',t:'rate10',q:'Physical attraction matters:',lo:'Not very important',hi:'Extremely important',d:'Chemistry'},
+{c:'No Safe Answers',t:'rate10',q:'Emotional connection matters:',lo:'Not very important',hi:'Extremely important',d:'Connection'},
+{c:'No Safe Answers',t:'rate10',q:'Communication matters:',lo:'Not very important',hi:'Extremely important',d:'Communication'},
+{c:'Blind Reveal 🔒',t:'multi',q:'Which words describe your ideal relationship?',o:['Trusting','Playful','Passionate','Peaceful','Adventurous','Supportive','Affectionate','Independent','Emotionally open'],d:'Future'},
+{c:'Blind Reveal 🔒',t:'multi',q:'What instantly makes somebody more attractive to you?',o:['Confidence','Humor','Kindness','Intelligence','Ambition','Great communication','Style / presentation','Physical appearance'],d:'Chemistry'},
+{c:'Final Read',t:'multi',q:'Which things would make a connection especially hard to resist?',o:['The flirting never gets stale','We can talk and laugh for hours','The physical tension stays strong',"We respect each other's boundaries","We're unusually comfortable together",'We bring out a bolder side in each other'],d:'Connection'}
+];
+let params=new URLSearchParams(location.search),invite=params.get('invite'),qa=params.get('qa')==='1';
+let state={i:0,a:{},name:'',mode:invite?'p2':'p1',p1:null};
+const KEY='between_us_v2';
+function enc(o){return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function dec(s){try{let x=s.replace(/-/g,'+').replace(/_/g,'/');while(x.length%4)x+='=';return JSON.parse(decodeURIComponent(escape(atob(x))))}catch{return null}}
+if(invite){state.p1=dec(invite);if(!state.p1||!state.p1.a){invite=null;state.mode='p1';state.p1=null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({...state,invite}))}catch{}}
+function load(){if(invite)return;try{let s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.a)state={...state,...s}}catch{}}
+function start(){
+ app.innerHTML=`<section class="card hero"><div class="brand">BETWEEN US</div><h1>The Connection Mix</h1><p>${state.mode==='p2'?'Someone already locked in their answers. Now it is your turn.':'A two-person crossover test about chemistry, communication, affection, conflict, intimacy and what happens when the answers stop being safe.'}</p><input id="nm" class="input" maxlength="32" placeholder="First name or nickname"><button class="btn" id="go">${state.mode==='p2'?'Take My Side':'Start the Mix'}</button><div class="notice tiny">No account required. Share links contain the first person's locked answers, so only send them to someone you trust.</div></section>`;
+ $('#go').onclick=()=>{state.name=$('#nm').value.trim()||(state.mode==='p2'?'Player 2':'Player 1');save();render()}
+}
+function letters(j){return String.fromCharCode(65+j)}
+function questionOpts(x,ans){
+ if(x.t==='rate5'){return `<div class="scale">${[1,2,3,4,5].map((n,j)=>`<div class="opt ${ans===j?'sel':''}" data-j="${j}">${n}</div>`).join('')}</div><div class="tiny" style="display:flex;justify-content:space-between"><span>${x.lo}</span><span>${x.hi}</span></div>`}
+ if(x.t==='rate10'){return `<div class="scale10">${Array.from({length:10},(_,j)=>`<div class="opt ${ans===j?'sel':''}" data-j="${j}">${j+1}</div>`).join('')}</div><div class="tiny" style="display:flex;justify-content:space-between;margin-top:8px"><span>${x.lo}</span><span>${x.hi}</span></div>`}
+ return `<div>${x.o.map((o,j)=>`<div class="opt ${Array.isArray(ans)?(ans.includes(j)?'sel':''):(ans===j?'sel':'')}" data-j="${j}"><b>${letters(j)}</b><span>${esc(o)}</span></div>`).join('')}</div>`
+}
+function render(){
+ const x=Q[state.i],ans=state.a[state.i],multi=x.t==='multi';
+ app.innerHTML=`<div class="top"><button class="back" id="back">← BACK</button><div><div class="meta"><span>${x.c}</span><span>${state.i+1} / ${Q.length}</span></div><div class="progress"><i style="width:${(state.i+1)/Q.length*100}%"></i></div></div></div>
+ <section class="card"><div class="eyebrow">${multi?'SELECT ALL THAT APPLY':x.t.startsWith('rate')?'RATE IT':x.t==='either'?'OWN YOUR ANSWER':'PICK WHAT FEELS TRUE'}</div><h2 class="q">${esc(x.q)}</h2>${multi?'<div class="hint">Choose every answer that fits.</div>':''}<div id="opts">${questionOpts(x,ans)}</div><div class="nav"><button class="btn ghost" id="prev">Back</button><button class="btn" id="next">${state.i===Q.length-1?'Lock It In':'Next →'}</button></div></section>`;
+ document.querySelectorAll('.opt').forEach(el=>el.onclick=()=>{let j=+el.dataset.j;if(multi){let a=Array.isArray(state.a[state.i])?[...state.a[state.i]]:[];state.a[state.i]=a.includes(j)?a.filter(v=>v!==j):[...a,j]}else state.a[state.i]=j;save();render()});
+ const goBack=()=>{if(state.i){state.i--;save();render()}else start()};$('#back').onclick=goBack;$('#prev').onclick=goBack;
+ $('#next').onclick=()=>{let a=state.a[state.i];if(a===undefined||(Array.isArray(a)&&!a.length))return;if(state.i<Q.length-1){state.i++;save();render()}else finish()}
+}
+function finish(){
+ if(state.mode==='p1'){
+   const payload={v:2,name:state.name,a:state.a};
+   const url=location.origin+location.pathname+'?invite='+enc(payload);
+   app.innerHTML=`<section class="card hero"><div class="eyebrow">PLAYER 1 LOCKED</div><h1>Your Side Is In.</h1><p>Send this private invite to Player 2. When they finish, both sets of answers will be compared on their device.</p><button class="btn" id="share">Share Player 2 Link</button><button class="btn ghost" id="copy">Copy Link</button><div class="notice tiny">${esc(url)}</div></section>`;
+   const share=async()=>{try{navigator.share?await navigator.share({title:'BETWEEN US',text:'Take your side of BETWEEN US.',url}):await navigator.clipboard.writeText(url)}catch{}};
+   $('#share').onclick=share;$('#copy').onclick=()=>navigator.clipboard?.writeText(url);
+ } else results(state.p1,{name:state.name,a:state.a})
+}
+function sim(x,y,t,n){
+ if(t==='multi'){let A=new Set(x||[]),B=new Set(y||[]),u=new Set([...A,...B]).size,inter=[...A].filter(v=>B.has(v)).length;return u?inter/u:0}
+ if(x===y)return 1;
+ if(t==='rate5'||t==='rate10')return Math.max(0,1-Math.abs(x-y)/Math.max(1,n-1));
+ return Math.max(.15,1-Math.abs(x-y)/Math.max(1,n-1))
+}
+function results(p1,p2){
+ const by={},rows=[];let total=0;
+ Q.forEach((q,i)=>{let n=q.o?q.o.length:(q.t==='rate10'?10:5),s=sim(p1.a[i],p2.a[i],q.t,n);(by[q.d]??=[]).push(s);total+=s;rows.push({q:q.q,s,a:p1.a[i],b:p2.a[i],x:q})});
+ const scores=Object.fromEntries(Object.entries(by).map(([k,v])=>[k,Math.round(v.reduce((a,b)=>a+b,0)/v.length*100)]));
+ const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]),overall=Math.round(total/Q.length*100),top=sorted.slice(0,2),low=[...sorted].reverse().slice(0,3);
+ const fmt=(q,a)=>{if(q.t==='multi')return (a||[]).map(i=>q.o[i]).join(', ');if(q.t==='rate5'||q.t==='rate10')return String((a??0)+1);return q.o[a]||''};
+ const focus=rows.sort((a,b)=>a.s-b.s).slice(0,5);
+ const moves=low.map(([d])=>({Chemistry:'Each name one thing that instantly increases attraction for you — and one thing that kills the vibe.',Communication:'Finish this sentence separately: “I feel heard when…” Then compare.',Security:'Each name the behavior that makes you relax most in a connection.',Affection:'Pick one kind of affection you naturally give and one you most want to receive.',Lifestyle:'Plan one low-pressure date that includes one thing each person genuinely enjoys.',Future:'Compare what “going somewhere” means to each of you without forcing a timeline.',Conflict:'Agree on one sentence either person can use when a disagreement needs a reset.',Intimacy:'Ask one question you normally avoid because the answer might make things more real.',Connection:'Each say what keeps a connection interesting after the first spark.'}[d]||'Compare one answer you did not expect and explain why.'));
+ app.innerHTML=`<div class="brand">BETWEEN US</div><section class="card hero"><div class="eyebrow">YOUR TWO-PERSON READ</div><h1>${overall}%</h1><h2>${overall>=82?'THE SIGNAL IS LOUD':overall>=70?'THERE IS SOMETHING HERE':overall>=58?'A REAL MIX':'DIFFERENT FREQUENCIES'}</h2><p><b>${esc(p1.name)}</b> + <b>${esc(p2.name)}</b><br>Your strongest shared signals are <b>${top.map(x=>x[0]).join(' + ')}</b>.</p></section>
+ <section class="card"><h2>The Mix</h2><div class="scores">${sorted.map(([k,v])=>`<div class="score"><div class="tiny">${k}</div><strong>${v}%</strong></div>`).join('')}</div></section>
+ <section class="card"><div class="eyebrow">BLIND REVEAL</div><h2>Where your answers diverged most</h2><div class="compare">${focus.map(r=>`<div class="row ${r.s>.7?'same':'diff'}"><strong>${esc(r.q)}</strong><div class="tiny">${esc(p1.name)}: ${esc(fmt(r.x,r.a))}</div><div class="tiny">${esc(p2.name)}: ${esc(fmt(r.x,r.b))}</div></div>`).join('')}</div></section>
+ <section class="card"><div class="eyebrow">WHAT HAPPENS NEXT</div><h2>Between Us Moves ✦</h2>${moves.map((m,i)=>`<div class="mission"><b>MOVE ${i+1}</b><br>${m}</div>`).join('')}</section>
+ <section class="card"><button class="btn" id="shareRes">Share Result Summary</button><button class="btn ghost" id="again">Start Over</button></section>`;
+ $('#shareRes').onclick=async()=>{let text=`BETWEEN US — ${overall}% • Strongest: ${top.map(x=>x[0]).join(' + ')}`;try{navigator.share?await navigator.share({title:'BETWEEN US',text}):await navigator.clipboard.writeText(text)}catch{}};
+ $('#again').onclick=()=>{localStorage.removeItem(KEY);location.href=location.pathname}
+}
+if(qa){let b=document.createElement('button');b.className='qa';b.textContent='🧪 QA Auto-Fill';b.onclick=()=>{state.name=state.mode==='p2'?'QA Player 2':'QA Player 1';state.a={};Q.forEach((q,i)=>state.a[i]=q.t==='multi'?[0,1]:q.t==='rate10'?7:q.t==='rate5'?3:i%(q.o?.length||2));state.i=Q.length-1;save();render()};document.body.appendChild(b)}
+load();state.name?render():start();
+</script>
+<script>if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}</script>
+</body></html>
